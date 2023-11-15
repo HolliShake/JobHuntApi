@@ -39,7 +39,7 @@ class CompanyController extends ControllerBase
 
         if ($validator->fails())
         {
-            return $this->badRequest($validator->errors());
+            return $this->badRequest([ 'errors' => $validator->errors() ]);
         }
 
         $company = $this->companyService->create(request()->all());

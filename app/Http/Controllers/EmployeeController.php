@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\employee\IEmployeeService;
+use Illuminate\Support\Facades\Validator;
 
 class EmployeeController extends ControllerBase
 {
@@ -12,22 +13,19 @@ class EmployeeController extends ControllerBase
 
     function createEmployee()
     {
+        $validator = Validator::make(request()->all(), $this->rules());
 
+        if ($validator->fails())
+        {
+            return $this->badRequest([ 'errors' => $validator->errors() ]);
+        }
     }
 
     function rules()
     {
         return [
-            'employeeID' => 'required',
-            'email' => 'required|email',
+            'employeeID' => 'required|string',
+            'hired_applicant_id' => 'required',
         ];
     }
 }
-
-/*
-    $table->string('employeeID');
-    // Add more fields later
-    // Fk
-    $table->unsignedBigInteger('hired_applicant_id');
-    $table->foreign('hired_applicant_id')->references('id')->on('hired_applicant');
-*/
