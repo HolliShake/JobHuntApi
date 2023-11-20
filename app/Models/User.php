@@ -27,6 +27,8 @@ class User extends Authenticatable
         'gender',
         'birth_date',
         'mobile_number',
+        'address',
+        'country',
     ];
 
     /**
@@ -53,5 +55,11 @@ class User extends Authenticatable
     public function user_access()
     {
         return $this->hasMany(UserAccess::class, 'user_id', 'id');
+    }
+
+    //
+    public function personal_data()
+    {
+        return $this->hasOne(PersonalData::class, 'user_id', 'id');
     }
 }

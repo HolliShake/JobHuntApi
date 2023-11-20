@@ -27,14 +27,14 @@ class AuthServiceProvider extends ServiceProvider
         ]);
 
         $MODULES = [
-            'Job',
-            'Skill',
-            'User',
+            'admin',
+            'user',
         ];
 
         $OPERATION = [
-            "view",
-            "create",
+            "all",
+            "read",
+            "write",
             "update",
             "delete",
         ];

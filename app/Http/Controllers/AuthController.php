@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Dto\user\GetUserDto;
 use App\Services\user\IUserService;
-use AutoMapperPlus\AutoMapper;
+use App\Services\user_access\IUserAccessService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-use function PHPSTORM_META\map;
 
 class AuthController extends ControllerBase
 {
-    function __construct(protected readonly IUserService $userService)
+    function __construct(protected readonly IUserService $userService, protected readonly IUserAccessService $userAccess)
     {
     }
 
@@ -34,12 +32,12 @@ class AuthController extends ControllerBase
 
         if (!$user)
         {
-            return $this->badRequest("");
+            return $this->badRequest([ 'errors' => "invalid username or password" ]);
         }
 
         if (!Hash::check($credentials['password'], $user->password))
         {
-            return $this->unauthorized("");
+            return $this->unauthorized([ 'errors' => "invalid username or password" ]);
         }
 
         $scope = [];
@@ -65,6 +63,43 @@ class AuthController extends ControllerBase
         }
 
         $result = $this->userService->create(request()->all());
+
+
+        if ($result) {
+            $access = $this->userAccess->createAll([
+                [
+                    'user_id' => $result->id,
+                    'subject' => 'user',
+                    'action' => 'all'
+                ],
+                [
+                    'user_id' => $result->id,
+                    'subject' => 'user',
+                    'action' => 'read'
+                ],
+                [
+                    'user_id' => $result->id,
+                    'subject' => 'user',
+                    'action' => 'write'
+                ],
+                [
+                    'user_id' => $result->id,
+                    'subject' => 'user',
+                    'action' => 'update'
+                ],
+                [
+                    'user_id' => $result->id,
+                    'subject' => 'user',
+                    'action' => 'delete'
+                ],
+            ]);
+
+            if (!$access) {
+                return $this->badRequest("");
+            }
+
+        }
+
         return ($result) ? $this->noContent() : $this->badRequest("Something went wrong while registering.");
     }
 
@@ -83,9 +118,46 @@ class AuthController extends ControllerBase
             'gender' => 'Male',
             'birth_date' => new \DateTime('2000-05-23'),
             'mobile_number' => '09xxxxxxxxx',
+            'address' => 'USTP-CDO, CM-Recto Lapasan',
+            'country' => 'Philippines',
             'email' => 'admin.jobhunt.dev@gmail.com',
             'password' => Hash::make('admin12345678')
         ]);
+
+        if ($result) {
+            $access = $this->userAccess->createAll([
+                [
+                    'user_id' => $result->id,
+                    'subject' => 'admin',
+                    'action' => 'read'
+                ],
+                [
+                    'user_id' => $result->id,
+                    'subject' => 'admin',
+                    'action' => 'all'
+                ],
+                [
+                    'user_id' => $result->id,
+                    'subject' => 'admin',
+                    'action' => 'write'
+                ],
+                [
+                    'user_id' => $result->id,
+                    'subject' => 'admin',
+                    'action' => 'update'
+                ],
+                [
+                    'user_id' => $result->id,
+                    'subject' => 'admin',
+                    'action' => 'delete'
+                ],
+            ]);
+
+            if (!$access) {
+                return $this->badRequest("");
+            }
+
+        }
 
         return ($result) ? $this->created($result) : $this->badRequest("");
     }
@@ -96,10 +168,12 @@ class AuthController extends ControllerBase
             'first_name' => 'required|string|max:50',
             'last_name' => 'required|string|max:50',
             'middle_name' => 'required|string|max:50',
-            'suffix' => 'required|string|max:10',
+            'suffix' => 'max:10',
             'gender' => 'required|string|max:10',
             'birth_date' => 'required|date',
             'mobile_number' => 'required|string',
+            'address' => 'required|string|max: 512',
+            'country' => 'required|string|max: 100',
             'email' => 'required|string|email|unique:users,email',
             'password' => 'required|string|confirmed'
         ];

@@ -2,6 +2,10 @@
 
 namespace App\Services;
 
+use App\Services\education\EducationService;
+use App\Services\education\IEducationService;
+use App\Services\personal_data\IPersonalDataService;
+use App\Services\personal_data\PersonalDataService;
 use Illuminate\Foundation\Application;
 use App\Services\skill\ISkillService;
 use App\Services\skill\SkillService;
@@ -17,5 +21,7 @@ class ServiceInjector
         $app->bind(ISkillService::class, SkillService::class);
         $app->bind(IUserService::class, UserService::class);
         $app->bind(IUserAccessService::class, UserAccessService::class);
+        $app->bind(IPersonalDataService::class, PersonalDataService::class);
+        $app->bind(IEducationService::class, EducationService::class);
     }
 }

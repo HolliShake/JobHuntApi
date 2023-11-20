@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\user\IUserService;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends ControllerBase
@@ -29,12 +30,33 @@ class UserController extends ControllerBase
             return $this->notFound("");
         }
 
-        $updated = array_merge($user, request()->all());
-        $updated = $this->userService->update($updated);
+        $password = request()->input('password');
 
-        return ($updated)
-            ? $this->noContent($updated)
-            : $this->badRequest("Something went wrong while updating.");
+        if ($password) {
+            $password_validator = Validator::make(request()->all(), [
+                'password' => 'required|string|min:8|confirmed',
+            ]);
+
+            if ($password_validator->fails()) {
+                return $this->badRequest([ 'error' => $password_validator->errors() ]);
+            }
+
+            $updated = (object) array_merge((array) $user, request()->all());
+            $updated->password = Hash::make($password);
+            $uresult = $this->userService->update($updated);
+
+            return ($uresult)
+                ? $this->ok($updated)
+                : $this->badRequest("Something went wrong while updating.");
+
+        } else {
+            $updated = (object) array_merge((array) $user, request()->all());
+            $uresult = $this->userService->update($updated);
+
+            return ($uresult)
+                ? $this->ok($updated)
+                : $this->badRequest("Something went wrong while updating.");
+        }
     }
 
     function deleteUser($id)
@@ -57,12 +79,13 @@ class UserController extends ControllerBase
             'first_name' => 'required|string|max:50',
             'last_name' => 'required|string|max:50',
             'middle_name' => 'required|string|max:50',
-            'suffix' => 'required|string|max:10',
+            'suffix' => 'max:10',
             'gender' => 'required|string|max:10',
             'birth_date' => 'required|date',
             'mobile_number' => 'required|string',
-            'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|confirmed'
+            'email' => 'required|string|email|exists:users,email',
+            'address' => 'required|string|max: 512',
+            'country' => 'required|string|max: 100',
         ];
     }
 }

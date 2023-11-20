@@ -3,4 +3,6 @@
 namespace App\Services\skill;
 use App\Services\IGenericService;
 
-interface ISkillService extends IGenericService {}
+interface ISkillService extends IGenericService {
+    function getSkillsByUserId($userId);
+}

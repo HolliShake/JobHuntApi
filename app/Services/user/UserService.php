@@ -12,5 +12,9 @@ class UserService extends GenericService implements IUserService {
     function getByEmail($email) {
         return User::with("user_access")->where('email', $email)->first();
     }
+
+    function getUserWithPersonalData($userId) {
+        return User::with("user_access")->with("personal_data")->where('id', $userId)->first();
+    }
 }
 

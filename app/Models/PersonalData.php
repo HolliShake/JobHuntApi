@@ -17,7 +17,7 @@ class PersonalData extends Model
         'city',
         'religion',
         'civil_status',
-        'citizinship',
+        'citizenship',
         // Mother
         'mother_first_name',
         'mother_maiden_name',

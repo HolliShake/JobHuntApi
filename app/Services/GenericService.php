@@ -19,11 +19,11 @@ class GenericService implements IGenericService {
     }
 
     function createAll(Array $newitemArray) {
-        return $this->model::createAll($newitemArray);
+        return $this->model::insert($newitemArray);
     }
 
     function update($updatedItem) {
-        return $this->model::find($updatedItem->id)->update($updatedItem);
+        return $this->model::find($updatedItem->id)->update((array) $updatedItem);
     }
 
     function delete($oldItem) {
