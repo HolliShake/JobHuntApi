@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\PersonalDataController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserAccessController;
 use App\Http\Controllers\UserController;
@@ -36,6 +37,13 @@ Route::controller(UserController::class)->group(function() {
     Route::get('/User/all', 'all');
     Route::put('/User/update/{user_id}', 'updateUser')->where('user_id', '\d*');
     Route::put('/User/delete/{user_id}', 'deleteUser')->where('user_id', '\d*');
+});
+
+// Personal Data
+Route::controller(PersonalDataController::class)->group(function() {
+    Route::get('/PersonalData/all', 'all');
+    Route::middleware('auth:api')->get('/PersonalData/My', 'getPersonalDataByLoggedInUser');
+    Route::put('/PersonalData/update/{personal_data_id}', 'updatePersonalData')->where('personal_data_id', '\d*');
 });
 
 // Skills

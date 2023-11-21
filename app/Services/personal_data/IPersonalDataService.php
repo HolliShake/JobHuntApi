@@ -5,4 +5,5 @@ use App\Services\IGenericService;
 
 interface IPersonalDataService extends IGenericService {
     function makeDefault($userId);
+    function getPersonalDataByUserId($userId);
 }

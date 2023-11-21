@@ -11,6 +11,10 @@ class PersonalDataService extends GenericService implements IPersonalDataService
     }
 
     function makeDefault($userId) {
+        if ($this->getPersonalDataByUserId($userId)) {
+            return null;
+        }
+
         return $this->create([
             'address' => '',
             'postal' => 0,
@@ -30,5 +34,9 @@ class PersonalDataService extends GenericService implements IPersonalDataService
             //
             'user_id' => $userId,
         ]);
+    }
+
+    function getPersonalDataByUserId($userId) {
+        return $this->model::where('user_id', $userId)->first();
     }
 }

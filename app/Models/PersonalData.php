@@ -20,7 +20,7 @@ class PersonalData extends Model
         'citizenship',
         // Mother
         'mother_first_name',
-        'mother_maiden_name',
+        'mother_middle_name',
         'mother_last_name',
         // Father
         'father_first_name',

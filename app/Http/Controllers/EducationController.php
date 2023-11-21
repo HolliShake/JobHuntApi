@@ -22,12 +22,15 @@ class EducationController extends ControllerBase
     }
 
     function getEducationsByUserId($user_id) {
-        return $this->ok($this->educationService->getEducationsByUserId($user_id));
+        $data = $this->educationService->getEducationsByUserId($user_id);
+        return ($data)
+            ? $this->ok($data)
+            : $this->notFound('');
     }
 
     function getEducationsByLoggedInUser() {
         $user = request()->user();
-        return $this->ok($this->educationService->getEducationsByUserId($user->id));
+        return $this->getEducationsByUserId($user->id);
     }
 
     function createEducation()
@@ -91,6 +94,21 @@ class EducationController extends ControllerBase
 
         return ($uresult)
             ? $this->ok($updated)
+            : $this->badRequest("");
+    }
+
+    function deleteEducation($education_id)
+    {
+        $result = $this->educationService->getById($education_id);
+
+        if (!$result) {
+            return $this->notFound('');
+        }
+
+        $result = $this->educationService->delete($result);
+
+        return ($result)
+            ? $this->noContent()
             : $this->badRequest("");
     }
 

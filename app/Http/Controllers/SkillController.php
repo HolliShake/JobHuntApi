@@ -19,18 +19,21 @@ class SkillController extends ControllerBase
 
     function all()
     {
-        return response()->json($this->skillService->all(), 200);
+        return $this->ok($this->skillService->all());
     }
 
     function getSkillsByUserId($user_id)
     {
-        return $this->ok($this->skillService->getSkillsByUserId($user_id));
+        $data = $this->skillService->getSkillsByUserId($user_id);
+        return ($data)
+            ? $this->ok($data)
+            : $this->notFound('');
     }
 
     function getSkillsByLoggedInUser()
     {
         $user = request()->user();
-        return $this->ok($this->skillService->getSkillsByUserId($user->id));
+        return $this->getSkillsByUserId($user->id);
     }
 
     function createSkill()
