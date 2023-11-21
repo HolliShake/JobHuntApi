@@ -2,6 +2,7 @@
 
 namespace App\Services\education;
 
+use App\Models\Education;
 use App\Services\GenericService;
 
 class EducationService extends GenericService implements IEducationService

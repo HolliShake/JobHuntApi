@@ -11,6 +11,7 @@ class Education extends Model
 
     protected $primaryKey = 'id';
     public $timestamps = false;
+    public $table = 'educational_attainment';
 
     protected $fillable = [
         'personal_data_id',

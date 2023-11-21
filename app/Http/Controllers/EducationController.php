@@ -70,14 +70,40 @@ class EducationController extends ControllerBase
                 : $this->badRequest("");
         }
     }
+
+    function updateEducation($education_id)
+    {
+        $validator = Validator::make(request()->all(), $this->rules());
+
+        if ($validator->fails())
+        {
+            return $this->badRequest([ 'errors' => $validator->errors() ]);
+        }
+
+        $result = $this->educationService->getById($education_id);
+
+        if (!$result) {
+            return $this->notFound('');
+        }
+
+        $updated = (object) array_merge((array) $result, request()->all());
+        $uresult = $this->educationService->update($updated);
+
+        return ($uresult)
+            ? $this->ok($updated)
+            : $this->badRequest("");
+    }
+
+    function rules()
+    {
+        return [
+            'school_name' => 'required|string|max:100',
+            'location' => 'required|string',
+            'status' => 'required|string',
+            'start_sy' => 'required|date',
+            'end_sy' => 'required|date',
+            'user_id' => 'required|integer'
+        ];
+    }
 }
 
-
-/*
-    Route::get('/Education/all', 'all');
-    Route::get('/Education/User/{user_id}', 'getEducationsByUserId')->where('user_id', '\d*');
-    Route::middleware('auth:api')->get('/Education/My', 'getEducationsByLoggedInUser');
-    Route::post('/Education/create', 'createEducation');
-    Route::put('/Education/update/{education_id}', 'updateEducation')->where('education_id', '\d*');
-    Route::delete('/Education/delete/{education_id}', 'deleteEducation')->where('education_id', '\d*');
-*/
