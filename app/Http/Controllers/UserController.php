@@ -21,7 +21,7 @@ class UserController extends ControllerBase
         $validator = Validator::make(request()->all(), $this->rules());
         if ($validator->fails())
         {
-            return $this->badRequest([ 'error' => $validator->errors() ]);
+            return $this->badRequest([ 'errors' => $validator->errors() ]);
         }
 
         $user = $this->userService->getById($id);
@@ -38,7 +38,7 @@ class UserController extends ControllerBase
             ]);
 
             if ($password_validator->fails()) {
-                return $this->badRequest([ 'error' => $password_validator->errors() ]);
+                return $this->badRequest([ 'errors' => $password_validator->errors() ]);
             }
 
             $updated = (object) array_merge((array) $user, request()->all());

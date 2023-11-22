@@ -8,6 +8,8 @@ use App\Services\education\EducationService;
 use App\Services\education\IEducationService;
 use App\Services\personal_data\IPersonalDataService;
 use App\Services\personal_data\PersonalDataService;
+use App\Services\salary\ISalaryService;
+use App\Services\salary\SalaryService;
 use Illuminate\Foundation\Application;
 use App\Services\skill\ISkillService;
 use App\Services\skill\SkillService;
@@ -26,5 +28,6 @@ class ServiceInjector
         $app->bind(IPersonalDataService::class, PersonalDataService::class);
         $app->bind(IEducationService::class, EducationService::class);
         $app->bind(ICompanyService::class, CompanyService::class);
+        $app->bind(ISalaryService::class, SalaryService::class);
     }
 }
