@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Services\company\CompanyService;
+use App\Services\company\ICompanyService;
 use App\Services\education\EducationService;
 use App\Services\education\IEducationService;
 use App\Services\personal_data\IPersonalDataService;
@@ -23,5 +25,6 @@ class ServiceInjector
         $app->bind(IUserAccessService::class, UserAccessService::class);
         $app->bind(IPersonalDataService::class, PersonalDataService::class);
         $app->bind(IEducationService::class, EducationService::class);
+        $app->bind(ICompanyService::class, CompanyService::class);
     }
 }

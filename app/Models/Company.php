@@ -12,13 +12,14 @@ class Company extends Model
     // Table Name
     protected $table = 'company';
     protected $primaryKey = 'id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $fillable = [
         'company_name',
         'email',
         'description',
         'address',
-        'user_id'
+        'user_id',
+        'status'
     ];
 }

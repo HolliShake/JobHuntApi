@@ -26,7 +26,7 @@ class CompanyController extends ControllerBase
 
     function myCompany()
     {
-        $company = $this->companyService->getById(auth()->user()->id);
+        $company = $this->companyService->getAllCompaniesByUserId(auth()->user()->id);
 
         return ($company)
             ? $this->ok($company)
@@ -51,11 +51,11 @@ class CompanyController extends ControllerBase
 
     function updateCompany($company_id)
     {
-        $validator = Validator::make(request()->all(), $this->rules());
+        $validator = Validator::make(request()->all(), $this->updateRules());
 
         if ($validator->fails())
         {
-            return $this->badRequest($validator->errors());
+            return $this->badRequest([ 'errors' => $validator->errors() ]);
         }
 
         $company = $this->companyService->getById($company_id);
@@ -65,10 +65,10 @@ class CompanyController extends ControllerBase
             return $this->notFound("");
         }
 
-        $updated = array_merge($company, request()->all());
-        $updated = $this->companyService->update($updated);
+        $updated = (object) array_merge((array) $company, request()->all());
+        $uresult = $this->companyService->update($updated);
 
-        return ($updated)
+        return ($uresult)
             ? $this->ok($updated)
             : $this->badRequest("Something went wrong while updating.");
     }
@@ -87,6 +87,18 @@ class CompanyController extends ControllerBase
         return ($success)
             ? $this->noContent()
             : $this->badRequest("Something went wrong while deleting.");
+    }
+
+    function updateRules()
+    {
+        return [
+            'company_name' => 'required|string|max:75',
+            'email' => 'required|email|string',
+            'description' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'status' => 'required|string',
+            'user_id' => 'required',
+        ];
     }
 
     function rules()
