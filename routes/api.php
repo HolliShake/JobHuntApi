@@ -91,7 +91,7 @@ Route::controller()->group(function() {
     Route::get('/Salary/Position/{company_id}', 'getPositionsByCompanyId')->where('company_id', '\d+');
     Route::post('/Position/create', 'createPosition');
     Route::post('/Position/update/{position_id}', 'updatePosition')->where('position_id', '\d+');
-    Route::delete('/Position/delete/{position_id}', 'deletePosition')->where('position_id', '\d+')
+    Route::delete('/Position/delete/{position_id}', 'deletePosition')->where('position_id', '\d+');
 });
 
 // User Access
