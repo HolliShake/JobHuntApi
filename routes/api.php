@@ -80,10 +80,18 @@ Route::controller(CompanyController::class)->group(function() {
 // Salary
 Route::controller(SalaryController::class)->group(function() {
     Route::get('/Salary/Company/{company_id}', 'getSalariesByCompanyId')->where('company_id', '\d+');
+    Route::get('/Salary/{salary_id}', 'getSalaryById')->where('salary_id', '\d+');
     Route::post('/Salary/create', 'createSalary');
     Route::put('/Salary/update/{salary_id}', 'updateSalary')->where('salary_id', '\d+');
     Route::delete('/Salary/delete/{salary_id}', 'deleteSalary')->where('salary_id', '\d+');
+});
 
+// Position
+Route::controller()->group(function() {
+    Route::get('/Salary/Position/{company_id}', 'getPositionsByCompanyId')->where('company_id', '\d+');
+    Route::post('/Position/create', 'createPosition');
+    Route::post('/Position/update/{position_id}', 'updatePosition')->where('position_id', '\d+');
+    Route::delete('/Position/delete/{position_id}', 'deletePosition')->where('position_id', '\d+')
 });
 
 // User Access

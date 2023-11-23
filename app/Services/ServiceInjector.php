@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Services;
 
 use App\Services\company\CompanyService;
@@ -8,6 +7,8 @@ use App\Services\education\EducationService;
 use App\Services\education\IEducationService;
 use App\Services\personal_data\IPersonalDataService;
 use App\Services\personal_data\PersonalDataService;
+use App\Services\position\IPositionService;
+use App\Services\position\PositionService;
 use App\Services\salary\ISalaryService;
 use App\Services\salary\SalaryService;
 use Illuminate\Foundation\Application;
@@ -29,5 +30,6 @@ class ServiceInjector
         $app->bind(IEducationService::class, EducationService::class);
         $app->bind(ICompanyService::class, CompanyService::class);
         $app->bind(ISalaryService::class, SalaryService::class);
+        $app->bind(IPositionService::class, PositionService::class);
     }
 }

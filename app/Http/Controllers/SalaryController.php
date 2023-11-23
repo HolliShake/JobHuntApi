@@ -13,6 +13,13 @@ class SalaryController extends ControllerBase
         return $this->ok($this->salaryService->getSalaryByCompanyId($company_id));
     }
 
+    function getSalaryById($salary_id) {
+        $salary = $this->salaryService->getById($salary_id);
+        return ($salary)
+            ? $this->ok($salary)
+            : $this->notFound('');
+    }
+
     function createSalary() {
         $validator = Validator::make(request()->all(), $this->rules());
 
