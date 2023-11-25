@@ -13,7 +13,7 @@ class SalaryService extends GenericService implements ISalaryService
 
     function getSalaryByCompanyId($companyId)
     {
-        return $this->model::where('company_id', $companyId)->orderBy('title', 'asc')->orderBy('value', 'asc')->get();
+        return $this->model::where('company_id', $companyId)->orderByRaw('CHAR_LENGTH(title)')->orderBy('title', 'asc')->get();
     }
 }
 

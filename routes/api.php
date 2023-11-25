@@ -3,7 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PersonalDataController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserAccessController;
@@ -86,9 +88,18 @@ Route::controller(SalaryController::class)->group(function() {
     Route::delete('/Salary/delete/{salary_id}', 'deleteSalary')->where('salary_id', '\d+');
 });
 
+// Office
+Route::controller(OfficeController::class)->group(function() {
+    Route::get('/Office/Company/{company_id}', 'getOfficesByCompanyId')->where('company_id', '\d+');
+    Route::get('/Office/{office_id}', 'getOfficeById')->where('office_id', '\d+');
+    Route::post('/Office/create', 'createOffice');
+    Route::put('/Office/update/{office_id}', 'updateOffice')->where('office_id', '\d+');
+    Route::delete('/Office/delete/{office_id}', 'deleteOffice')->where('office_id', '\d+');
+});
+
 // Position
-Route::controller()->group(function() {
-    Route::get('/Salary/Position/{company_id}', 'getPositionsByCompanyId')->where('company_id', '\d+');
+Route::controller(PositionController::class)->group(function() {
+    Route::get('/Position/Company/{company_id}', 'getPositionsByCompanyId')->where('company_id', '\d+');
     Route::post('/Position/create', 'createPosition');
     Route::post('/Position/update/{position_id}', 'updatePosition')->where('position_id', '\d+');
     Route::delete('/Position/delete/{position_id}', 'deletePosition')->where('position_id', '\d+');

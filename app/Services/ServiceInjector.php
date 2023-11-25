@@ -5,6 +5,8 @@ use App\Services\company\CompanyService;
 use App\Services\company\ICompanyService;
 use App\Services\education\EducationService;
 use App\Services\education\IEducationService;
+use App\Services\office\IOfficeService;
+use App\Services\office\OfficeService;
 use App\Services\personal_data\IPersonalDataService;
 use App\Services\personal_data\PersonalDataService;
 use App\Services\position\IPositionService;
@@ -31,5 +33,6 @@ class ServiceInjector
         $app->bind(ICompanyService::class, CompanyService::class);
         $app->bind(ISalaryService::class, SalaryService::class);
         $app->bind(IPositionService::class, PositionService::class);
+        $app->bind(IOfficeService::class, OfficeService::class);
     }
 }
