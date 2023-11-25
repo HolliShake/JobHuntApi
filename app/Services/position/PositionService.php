@@ -12,4 +12,8 @@ class PositionService extends GenericService implements IPositionService {
     function getPositionsByCompanyId($company_id) {
         return $this->model::with('salary')->with('office')->where('company_id', $company_id)->get();
     }
+
+    function getCascadedPositionById($position_id) {
+        return $this->model::with('salary')->with('office')->where('id', $position_id)->first();
+    }
 }

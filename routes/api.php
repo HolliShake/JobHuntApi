@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdTypeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EducationController;
@@ -36,51 +37,51 @@ Route::controller(AuthController::class)->group(function() {
 });
 
 // Users
-Route::controller(UserController::class)->group(function() {
+Route::middleware('auth:api')->controller(UserController::class)->group(function() {
     Route::get('/User/all', 'all');
     Route::put('/User/update/{user_id}', 'updateUser')->where('user_id', '\d+');
     Route::put('/User/delete/{user_id}', 'deleteUser')->where('user_id', '\d+');
 });
 
 // Personal Data
-Route::controller(PersonalDataController::class)->group(function() {
+Route::middleware('auth:api')->controller(PersonalDataController::class)->group(function() {
     Route::get('/PersonalData/all', 'all');
-    Route::middleware('auth:api')->get('/PersonalData/My', 'getPersonalDataByLoggedInUser');
+    Route::get('/PersonalData/My', 'getPersonalDataByLoggedInUser');
     Route::put('/PersonalData/update/{personal_data_id}', 'updatePersonalData')->where('personal_data_id', '\d+');
 });
 
 // Skills
-Route::controller(SkillController::class)->group(function() {
+Route::middleware('auth:api')->controller(SkillController::class)->group(function() {
     Route::get('/Skill/all', 'all');
     Route::get('/Skill/User/{user_id}', 'getSkillsByUserId')->where('user_id', '\d+');
-    Route::middleware('auth:api')->get('/Skill/My', 'getSkillsByLoggedInUser');
+    Route::get('/Skill/My', 'getSkillsByLoggedInUser');
     Route::post('/Skill/create', 'createSkill');
     Route::put('/Skill/update/{skill_id}', 'updateSkill')->where('skill_id', '\d+');
     Route::delete('/Skill/delete/{skill_id}', 'deleteSkill')->where('skill_id', '\d+');
 });
 
 // Education
-Route::controller(EducationController::class)->group(function() {
+Route::middleware('auth:api')->controller(EducationController::class)->group(function() {
     Route::get('/Education/all', 'all');
     Route::get('/Education/User/{user_id}', 'getEducationsByUserId')->where('user_id', '\d+');
-    Route::middleware('auth:api')->get('/Education/My', 'getEducationsByLoggedInUser');
+    Route::get('/Education/My', 'getEducationsByLoggedInUser');
     Route::post('/Education/create', 'createEducation');
     Route::put('/Education/update/{education_id}', 'updateEducation')->where('education_id', '\d+');
     Route::delete('/Education/delete/{education_id}', 'deleteEducation')->where('education_id', '\d+');
 });
 
 // Company
-Route::controller(CompanyController::class)->group(function() {
-    Route::get('/Company/Public/All', 'all');
+Route::middleware('auth:api')->controller(CompanyController::class)->group(function() {
+    Route::get('/Company/all', 'all');
     Route::get('/Company/{company_id}', 'getCompanyById')->where('company_id', '\d+');
-    Route::middleware('auth:api')->get('/Company/My', 'myCompany');
+    Route::get('/Company/My', 'myCompany');
     Route::post('/Company/create', 'createCompany');
     Route::put('/Company/update/{companyd_id}', 'updateCompany')->where('company_id', '\d+');
     Route::delete('/Company/delete/{companyd_id}', 'deleteCompany')->where('company_id', '\d+');
 });
 
 // Salary
-Route::controller(SalaryController::class)->group(function() {
+Route::middleware('auth:api')->controller(SalaryController::class)->group(function() {
     Route::get('/Salary/Company/{company_id}', 'getSalariesByCompanyId')->where('company_id', '\d+');
     Route::get('/Salary/{salary_id}', 'getSalaryById')->where('salary_id', '\d+');
     Route::post('/Salary/create', 'createSalary');
@@ -89,7 +90,7 @@ Route::controller(SalaryController::class)->group(function() {
 });
 
 // Office
-Route::controller(OfficeController::class)->group(function() {
+Route::middleware('auth:api')->controller(OfficeController::class)->group(function() {
     Route::get('/Office/Company/{company_id}', 'getOfficesByCompanyId')->where('company_id', '\d+');
     Route::get('/Office/{office_id}', 'getOfficeById')->where('office_id', '\d+');
     Route::post('/Office/create', 'createOffice');
@@ -98,15 +99,25 @@ Route::controller(OfficeController::class)->group(function() {
 });
 
 // Position
-Route::controller(PositionController::class)->group(function() {
+Route::middleware('auth:api')->controller(PositionController::class)->group(function() {
     Route::get('/Position/Company/{company_id}', 'getPositionsByCompanyId')->where('company_id', '\d+');
+    Route::get('/Position/cascade/{position_id}', 'getCascadedPositionById')->where('position_id', '\d+');
     Route::post('/Position/create', 'createPosition');
     Route::post('/Position/update/{position_id}', 'updatePosition')->where('position_id', '\d+');
     Route::delete('/Position/delete/{position_id}', 'deletePosition')->where('position_id', '\d+');
 });
 
+// Adtype
+Route::middleware('auth:api')->controller(AdTypeController::class)->group(function() {
+    Route::get('/Adtype/all', 'all');
+    Route::get('/Adtype/{adtype_id}', 'getAdtypeById')->where('adtype_id', '\d+');
+    Route::post('/Adtype/create', 'createAdtype');
+    Route::put('/Adtype/update/{adtype_id}', 'updateAdtype')->where('adtype_id', '\d+');
+    Route::delete('/Adtype/delete/{adtype_id}', 'deleteAdtype')->where('adtype_id', '\d+');
+});
+
 // User Access
-Route::controller(UserAccessController::class)->group(function() {
+Route::middleware('auth:api')->controller(UserAccessController::class)->group(function() {
     Route::get('/UserAccess/User/{user_id}', 'getUserAccessByUserId')->where('getUserAccessByUserId', '\d+');
     Route::post('/UserAccess/create', 'create');
 });

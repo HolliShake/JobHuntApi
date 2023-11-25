@@ -43,7 +43,7 @@ class AuthController extends ControllerBase
         $scope = [];
 
         foreach ($user->user_access as $access) {
-            array_push($scope, "{$access->subject}->{$access->action}");
+            array_push($scope, $access->subject . "-can-" . $access->action);
         }
 
         $token = /**/
@@ -67,11 +67,6 @@ class AuthController extends ControllerBase
 
         if ($result) {
             $access = $this->userAccess->createAll([
-                [
-                    'user_id' => $result->id,
-                    'subject' => 'user',
-                    'action' => 'all'
-                ],
                 [
                     'user_id' => $result->id,
                     'subject' => 'user',

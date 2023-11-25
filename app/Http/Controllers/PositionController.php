@@ -19,6 +19,14 @@ class PositionController extends ControllerBase
             : $this->notFound('');
     }
 
+    function getCascadedPositionById($position_id) {
+        $position = $this->positionService->getCascadedPositionById($position_id);
+
+        return ($position)
+            ? $this->ok($position)
+            : $this->notFound('');
+    }
+
     function createPosition() {
         $validator = Validator::make(request()->all(), $this->rules());
 

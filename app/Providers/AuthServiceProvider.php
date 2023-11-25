@@ -22,17 +22,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Passport::setDefaultScope([
-            'auth',
-        ]);
-
         $MODULES = [
             'admin',
             'user',
         ];
 
         $OPERATION = [
-            "all",
             "read",
             "write",
             "update",
@@ -43,13 +38,11 @@ class AuthServiceProvider extends ServiceProvider
 
         foreach ($MODULES as $module) {
             foreach ($OPERATION as $operation) {
-                $rules["{$module}->{$operation}"] = ucfirst($operation) . " {$module}";
+                $rules[$module . "-can-" . $operation] = ucfirst($module) . " can " . $operation;
             }
         }
 
         Passport::tokensCan([
-            'auth->view' => 'View',
-            'all->all' => 'All',
             ...$rules,
         ]);
     }

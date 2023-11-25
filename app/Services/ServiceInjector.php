@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 
+use App\Services\adtype\AdtypeService;
+use App\Services\adtype\IAdTypeService;
 use App\Services\company\CompanyService;
 use App\Services\company\ICompanyService;
 use App\Services\education\EducationService;
@@ -34,5 +36,6 @@ class ServiceInjector
         $app->bind(ISalaryService::class, SalaryService::class);
         $app->bind(IPositionService::class, PositionService::class);
         $app->bind(IOfficeService::class, OfficeService::class);
+        $app->bind(IAdTypeService::class, AdtypeService::class);
     }
 }
