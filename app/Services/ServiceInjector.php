@@ -7,6 +7,12 @@ use App\Services\company\CompanyService;
 use App\Services\company\ICompanyService;
 use App\Services\education\EducationService;
 use App\Services\education\IEducationService;
+use App\Services\file_banner\FileBannerService;
+use App\Services\file_banner\IFileBannerService;
+use App\Services\file_sample_photo\FileSamplePhotoService;
+use App\Services\file_sample_photo\IFileSamplePhotoService;
+use App\Services\job_posting\IJobPostingService;
+use App\Services\job_posting\JobPostingService;
 use App\Services\office\IOfficeService;
 use App\Services\office\OfficeService;
 use App\Services\personal_data\IPersonalDataService;
@@ -37,5 +43,8 @@ class ServiceInjector
         $app->bind(IPositionService::class, PositionService::class);
         $app->bind(IOfficeService::class, OfficeService::class);
         $app->bind(IAdTypeService::class, AdtypeService::class);
+        $app->bind(IJobPostingService::class, JobPostingService::class);
+        $app->bind(IFileBannerService::class, FileBannerService::class);
+        $app->bind(IFileSamplePhotoService::class, FileSamplePhotoService::class);
     }
 }

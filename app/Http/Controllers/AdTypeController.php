@@ -60,7 +60,7 @@ class AdTypeController extends ControllerBase
             return $this->notFound('');
         }
 
-        $result = $this->adTypeService->delete($adtype_id);
+        $result = $this->adTypeService->delete($adtype);
 
         return ($result)
             ? $this->noContent('')

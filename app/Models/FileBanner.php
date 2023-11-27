@@ -5,17 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Salary extends Model
+class FileBanner extends Model
 {
     use HasFactory;
-    protected $table = 'salary';
+    protected $table = 'file_banner';
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'title',
-        'level',
-        'value',
-        'currency',
-        'company_id'
+        'job_posting_id',
+        'file_name',
     ];
 }

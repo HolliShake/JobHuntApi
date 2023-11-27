@@ -22,6 +22,12 @@ class AdType extends Model
         'is_editable'
     ];
 
+    protected $casts = [
+        'is_search_priority' => 'boolean',
+        'is_featured' => 'boolean',
+        'is_analytics_available' => 'boolean',
+        'is_editable' => 'boolean'
+    ];
 }
 
 

@@ -70,6 +70,7 @@ class SalaryController extends ControllerBase
             'title' => 'required|string',
             'level' => 'required|string',
             'value' => 'required|numeric',
+            'currency' => 'required|string',
             'company_id' => 'required|integer',
         ];
     }

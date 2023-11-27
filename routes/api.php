@@ -4,6 +4,7 @@ use App\Http\Controllers\AdTypeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PersonalDataController;
 use App\Http\Controllers\PositionController;
@@ -114,6 +115,14 @@ Route::middleware('auth:api')->controller(AdTypeController::class)->group(functi
     Route::post('/Adtype/create', 'createAdtype');
     Route::put('/Adtype/update/{adtype_id}', 'updateAdtype')->where('adtype_id', '\d+');
     Route::delete('/Adtype/delete/{adtype_id}', 'deleteAdtype')->where('adtype_id', '\d+');
+});
+
+// JobPosting
+Route::middleware('auth:api')->controller(JobPostingController::class)->group(function() {
+    Route::get('/JobPosting/Company/{company_id}', 'getJobPostingByCompanyId')->where('company_id', '\d+');
+    Route::post('/JobPosting/create', 'createJobPosting');
+    Route::put('/JobPosting/update/{job_posting_id}', 'updateJobPosting')->where('job_posting_id', '\d+');
+    Route::delete('/JobPosting/delete/{job_posting_id}', 'deleteJobPosting')->where('job_posting_id', '\d+');
 });
 
 // User Access
