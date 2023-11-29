@@ -76,7 +76,7 @@ class JobPostingController extends ControllerBase
             $iresult = $image->storeAs('uploads', $image_file_name, 'public');
 
             if ($iresult) {
-                array_push($present_files, (object) [
+                array_push($present_files, [
                     'job_posting_id' => $jobPosting->id,
                     'file_name' => $image_file_name,
                 ]);
@@ -96,7 +96,8 @@ class JobPostingController extends ControllerBase
     }
 
     function updateJobPosting($job_posting_id) {
-        $validator = Validator::make(request()->all(), $this->createRules());
+        $request = $this->getValue();
+        $validator = Validator::make($request, $this->updateRules());
 
         if ($validator->fails()) {
             return $this->badRequest([ 'errors' => $validator->errors() ]);
@@ -108,17 +109,10 @@ class JobPostingController extends ControllerBase
             return $this->notFound('');
         }
 
-        $jobPosting = $this->jobPostingService->update((object) [
-            ...($old),
-            'adtype_id' => request()->input('adtype_id'),
-            'position_id' => request()->input('position_id'),
-            'is_hide_company_info' => request()->input('is_hide_company_info'),
-            'is_hidden' => request()->input('is_hidden'),
-            'paid' => request()->input('paid'),
-            'description' => request()->input('description'),
-        ]);
+        $updated = (object) array_merge((array) $old, $request);
+        $uresult = $this->jobPostingService->update($updated);
 
-        if (!$jobPosting) {
+        if (!$uresult) {
             return $this->badRequest('');
         }
 
@@ -130,8 +124,9 @@ class JobPostingController extends ControllerBase
             $bresult = $banner->storeAs('uploads', $banner_file_name, 'public');
 
             if ($bresult) {
-                $bannerResult = $this->fileBannerService->create((object) [
-                    'job_posting_id' => $jobPosting->id,
+                $this->fileBannerService->deleteAllByJobPostingId($job_posting_id);
+                $bannerResult = $this->fileBannerService->create([
+                    'job_posting_id' => $job_posting_id,
                     'file_name' => $banner_file_name,
                 ]);
             }
@@ -156,14 +151,15 @@ class JobPostingController extends ControllerBase
             $iresult = $image->storeAs('uploads', $image_file_name, 'public');
 
             if ($iresult) {
-                array_push($present_files, (object) [
-                    'job_posting_id' => $jobPosting->id,
+                array_push($present_files, [
+                    'job_posting_id' => $job_posting_id,
                     'file_name' => $image_file_name,
                 ]);
             }
         }
 
         if (count($present_files) > 0) {
+            $this->fileSamplePhotoService->deleteAllByJobPostingId($job_posting_id);
             $result = $this->fileSamplePhotoService->createAll($present_files);
 
             if (!$result) {
@@ -172,10 +168,7 @@ class JobPostingController extends ControllerBase
         }
 
         // InserImages
-        return $this->created([
-            ...$jobPosting,
-            'banner' => $bannerResult,
-        ]);
+        return $this->ok($this->jobPostingService->getByIdWithRelation($old->id));
     }
 
     function deleteJobPosting($job_posting_id) {
@@ -198,10 +191,24 @@ class JobPostingController extends ControllerBase
             : $this->badRequest('');
     }
 
+    function updateJobPostingStatus($job_posting_id) {
+        $jobPosting = $this->jobPostingService->getById($job_posting_id);
+
+        if (!$jobPosting) {
+            return $this->notFound('');
+        }
+
+        $updated = (object) array_merge((array) $jobPosting, request()->all());
+        $uresult = $this->jobPostingService->update($updated);
+
+        return ($uresult)
+            ? $this->noContent()
+            : $this->badRequest('');
+    }
+
     function getValue() {
         return [
-            ...request()->all(),
-            'description' => ' ',
+            ...(request()->all()),
             'is_hide_company_info' => (request()->input('is_hide_company_info')  === 'true') ? 1 : 0,
             'is_hidden' => (request()->input('is_hidden')  === 'true') ? 1 : 0,
             'paid' => (request()->input('paid')  === 'true') ? 1 : 0,
@@ -218,6 +225,23 @@ class JobPostingController extends ControllerBase
             'description' => 'string|max:2048',
             'date_posted' => 'required|date',
             'banner' => 'required|mimes:jpg,png|max:10240', // 10mb
+            'file-1' => 'mimes:jpg,png|max:10240', // 10mb
+            'file-2' => 'mimes:jpg,png|max:10240', // 10mb
+            'file-3' => 'mimes:jpg,png|max:10240', // 10mb
+            'file-4' => 'mimes:jpg,png|max:10240', // 10mb
+        ];
+    }
+
+    function updateRules() {
+        return [
+            'adtype_id' => 'required|integer',
+            'position_id' => 'required|integer',
+            'is_hide_company_info' => 'required|boolean',
+            'is_hidden' => 'required|boolean',
+            'paid' => 'required|boolean',
+            'description' => 'string|max:2048',
+            'date_posted' => 'required|date',
+            'banner' => 'mimes:jpg,png|max:10240', // 10mb
             'file-1' => 'mimes:jpg,png|max:10240', // 10mb
             'file-2' => 'mimes:jpg,png|max:10240', // 10mb
             'file-3' => 'mimes:jpg,png|max:10240', // 10mb

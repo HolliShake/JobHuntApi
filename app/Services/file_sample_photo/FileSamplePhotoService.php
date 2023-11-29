@@ -9,4 +9,8 @@ class FileSamplePhotoService extends GenericService implements IFileSamplePhotoS
     public function __construct() {
         parent::__construct(FileSamplePhoto::class);
     }
+
+    function deleteAllByJobPostingId($jobPostingId) {
+        return $this->model::where('job_posting_id', $jobPostingId)->delete();
+    }
 }

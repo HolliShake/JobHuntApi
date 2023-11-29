@@ -10,11 +10,19 @@ class JobPostingService extends GenericService implements IJobPostingService {
     }
 
     function getByIdWithRelation($jobPostingId) {
-        return $this->model::with('position')->with('adtype')->with('banner')->with('sample_photos')->find($jobPostingId);
+        return $this->model::with([
+            'position' => function($query) {
+                $query->with('salary');
+            }
+        ])->with('adtype')->with('banner')->with('sample_photos')->find($jobPostingId);
     }
 
     function getByCompanyId($company_id) {
-        return $this->model::with('position')->with('adtype')->with('banner')->with('sample_photos')->whereHas('position', function($query) use($company_id) {
+        return $this->model::with([
+            'position' => function($query) {
+                $query->with('salary');
+            }
+        ])->with('adtype')->with('banner')->with('sample_photos')->whereHas('position', function($query) use($company_id) {
             $query->where('company_id', $company_id);
         })->get();
     }

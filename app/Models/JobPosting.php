@@ -19,7 +19,17 @@ class JobPosting extends Model
         'date_posted',
         'is_hide_company_info',
         'is_hidden',
+        'is_featured',
+        'is_editable',
         'description',
+    ];
+
+    protected $casts = [
+        'is_hide_company_info' => 'boolean',
+        'is_hidden' => 'boolean',
+        'is_featured' => 'boolean',
+        'is_editable' => 'boolean',
+        "paid" => 'boolean',
     ];
 
     function adtype()

@@ -121,7 +121,8 @@ Route::middleware('auth:api')->controller(AdTypeController::class)->group(functi
 Route::middleware('auth:api')->controller(JobPostingController::class)->group(function() {
     Route::get('/JobPosting/Company/{company_id}', 'getJobPostingByCompanyId')->where('company_id', '\d+');
     Route::post('/JobPosting/create', 'createJobPosting');
-    Route::put('/JobPosting/update/{job_posting_id}', 'updateJobPosting')->where('job_posting_id', '\d+');
+    Route::post('/JobPosting/update/{job_posting_id}', 'updateJobPosting')->where('job_posting_id', '\d+');
+    Route::patch('/JobPosting/status/{job_posting_id}', 'updateJobPostingStatus')->where('job_posting_id', '\d+');
     Route::delete('/JobPosting/delete/{job_posting_id}', 'deleteJobPosting')->where('job_posting_id', '\d+');
 });
 
