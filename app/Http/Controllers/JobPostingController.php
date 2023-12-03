@@ -178,11 +178,12 @@ class JobPostingController extends ControllerBase
             return $this->notFound('');
         }
 
-        $del = $this->fileBannerService->deleteAllByJobPostingId($job_posting_id);
+        $del0 = $this->fileBannerService->deleteAllByJobPostingId($job_posting_id);
+        $del1 = $this->fileSamplePhotoService->deleteAllByJobPostingId($job_posting_id);
 
-        // if (!$del) {
-        //     return $this->badRequest('Banner not deleted!');
-        // }
+        if (!($del0 || $del1)) {
+            return $this->badRequest('Banner not deleted!');
+        }
 
         $result = $this->jobPostingService->delete($jobPosting);
 
@@ -247,5 +248,11 @@ class JobPostingController extends ControllerBase
             'file-3' => 'mimes:jpg,png|max:10240', // 10mb
             'file-4' => 'mimes:jpg,png|max:10240', // 10mb
         ];
+    }
+
+    //
+
+    function getSampleFeaturedJobPosting() {
+        return $this->ok($this->jobPostingService->getSampleFeaturedJobPosting());
     }
 }

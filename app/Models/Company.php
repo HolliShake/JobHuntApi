@@ -22,4 +22,20 @@ class Company extends Model
         'user_id',
         'status'
     ];
+
+    protected $casts = [
+        'average' => 'integer'
+    ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function rating() {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function getAverageAttribute() {
+        return (int) $this->rating->avg('rating');
+    }
 }

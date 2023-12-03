@@ -81,6 +81,12 @@ Route::middleware('auth:api')->controller(CompanyController::class)->group(funct
     Route::delete('/Company/delete/{companyd_id}', 'deleteCompany')->where('company_id', '\d+');
 });
 
+// Company Public
+Route::controller(CompanyController::class)->group(function() {
+    Route::get('/Company/Public/all', 'publicAllCompany');
+    Route::get('/Company/Public/sample', 'getSampleCompanies');
+});
+
 // Salary
 Route::middleware('auth:api')->controller(SalaryController::class)->group(function() {
     Route::get('/Salary/Company/{company_id}', 'getSalariesByCompanyId')->where('company_id', '\d+');
@@ -124,6 +130,13 @@ Route::middleware('auth:api')->controller(JobPostingController::class)->group(fu
     Route::post('/JobPosting/update/{job_posting_id}', 'updateJobPosting')->where('job_posting_id', '\d+');
     Route::patch('/JobPosting/status/{job_posting_id}', 'updateJobPostingStatus')->where('job_posting_id', '\d+');
     Route::delete('/JobPosting/delete/{job_posting_id}', 'deleteJobPosting')->where('job_posting_id', '\d+');
+});
+
+// JobPosting Public
+Route::controller(JobPostingController::class)->group(function() {
+    Route::get('/JobPosting/Public/all', 'publicAllJobPosting');
+    Route::get('/JobPosting/Public/Company/{company_id}', 'getCompanyJobPosting')->where('company_id', '\d+');
+    Route::get('/JobPosting/Public/featured/sample', 'getSampleFeaturedJobPosting');
 });
 
 // User Access

@@ -6,4 +6,5 @@ use App\Services\IGenericService;
 interface IJobPostingService extends IGenericService {
     function getByIdWithRelation($jobPostingId);
     function getByCompanyId($company_id);
+    function getSampleFeaturedJobPosting();
 }

@@ -26,4 +26,14 @@ class JobPostingService extends GenericService implements IJobPostingService {
             $query->where('company_id', $company_id);
         })->get();
     }
+
+    function getSampleFeaturedJobPosting() {
+        return $this->model::with([
+            'position' => function($query) {
+                $query->with('salary')->with('office');
+            }
+        ])->with('adtype')->with('banner')->with('sample_photos')->where('is_hidden', false)->whereHas('adtype', function($query) {
+            $query->where('is_featured', true);
+        })->where('paid', true)->inRandomOrder()->take(4)->get();
+    }
 }

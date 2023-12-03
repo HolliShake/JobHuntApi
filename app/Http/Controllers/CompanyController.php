@@ -112,4 +112,13 @@ class CompanyController extends ControllerBase
             'user_id' => 'required',
         ];
     }
+
+    //
+    function publicAllCompany() {
+        return $this->ok($this->companyService->publicAll());
+    }
+
+    function getSampleCompanies() {
+        return $this->ok($this->companyService->getSampleCompanies());
+    }
 }
