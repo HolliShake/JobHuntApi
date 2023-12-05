@@ -9,8 +9,14 @@ use App\Services\education\EducationService;
 use App\Services\education\IEducationService;
 use App\Services\file_banner\FileBannerService;
 use App\Services\file_banner\IFileBannerService;
+use App\Services\file_cover\FileCoverService;
+use App\Services\file_cover\IFileCoverService;
+use App\Services\file_profile\FileProfileService;
+use App\Services\file_profile\IFileProfileService;
 use App\Services\file_sample_photo\FileSamplePhotoService;
 use App\Services\file_sample_photo\IFileSamplePhotoService;
+use App\Services\job_applicant\IJobApplicantService;
+use App\Services\job_applicant\JobApplicantService;
 use App\Services\job_posting\IJobPostingService;
 use App\Services\job_posting\JobPostingService;
 use App\Services\office\IOfficeService;
@@ -19,6 +25,8 @@ use App\Services\personal_data\IPersonalDataService;
 use App\Services\personal_data\PersonalDataService;
 use App\Services\position\IPositionService;
 use App\Services\position\PositionService;
+use App\Services\rating\IRatingService;
+use App\Services\rating\RatingService;
 use App\Services\salary\ISalaryService;
 use App\Services\salary\SalaryService;
 use Illuminate\Foundation\Application;
@@ -44,7 +52,11 @@ class ServiceInjector
         $app->bind(IOfficeService::class, OfficeService::class);
         $app->bind(IAdTypeService::class, AdtypeService::class);
         $app->bind(IJobPostingService::class, JobPostingService::class);
+        $app->bind(IRatingService::class, RatingService::class);
+        $app->bind(IJobApplicantService::class, JobApplicantService::class);
         $app->bind(IFileBannerService::class, FileBannerService::class);
         $app->bind(IFileSamplePhotoService::class, FileSamplePhotoService::class);
+        $app->bind(IFileProfileService::class, FileProfileService::class);
+        $app->bind(IFileCoverService::class, FileCoverService::class);
     }
 }

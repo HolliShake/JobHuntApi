@@ -10,4 +10,8 @@ class Rating extends Model
     use HasFactory;
     protected $table = 'rating';
     protected $primaryKey = 'rating_id';
+
+    function user() {
+        return $this->belongsTo(User::class);
+    }
 }

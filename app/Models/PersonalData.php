@@ -34,4 +34,12 @@ class PersonalData extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function skill() {
+        return $this->hasMany(Skill::class, 'personal_data_id', 'id');
+    }
+
+    public function education() {
+        return $this->hasMany(Education::class, 'personal_data_id', 'id');
+    }
 }

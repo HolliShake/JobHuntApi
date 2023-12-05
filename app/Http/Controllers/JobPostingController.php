@@ -20,6 +20,10 @@ class JobPostingController extends ControllerBase
         return $this->ok($this->jobPostingService->getByCompanyId($company_id));
     }
 
+    function getJobPostingById($job_posting_id) {
+        return $this->ok($this->jobPostingService->getByIdWithRelation($job_posting_id));
+    }
+
     function createJobPosting() {
         $request = $this->getValue();
         $validator = Validator::make($request, $this->createRules());

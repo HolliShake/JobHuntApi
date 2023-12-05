@@ -12,7 +12,7 @@ class JobPostingService extends GenericService implements IJobPostingService {
     function getByIdWithRelation($jobPostingId) {
         return $this->model::with([
             'position' => function($query) {
-                $query->with('salary');
+                $query->with('salary')->with('office');
             }
         ])->with('adtype')->with('banner')->with('sample_photos')->find($jobPostingId);
     }

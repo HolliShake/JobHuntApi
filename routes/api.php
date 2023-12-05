@@ -4,10 +4,14 @@ use App\Http\Controllers\AdTypeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\FileCoverController;
+use App\Http\Controllers\FileProfileController;
+use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PersonalDataController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserAccessController;
@@ -135,8 +139,24 @@ Route::middleware('auth:api')->controller(JobPostingController::class)->group(fu
 // JobPosting Public
 Route::controller(JobPostingController::class)->group(function() {
     Route::get('/JobPosting/Public/all', 'publicAllJobPosting');
+    Route::get('/JobPosting/Public/{job_posting_id}', 'getJobPostingById')->where('job_posting_id', '\d+');
     Route::get('/JobPosting/Public/Company/{company_id}', 'getCompanyJobPosting')->where('company_id', '\d+');
     Route::get('/JobPosting/Public/featured/sample', 'getSampleFeaturedJobPosting');
+});
+
+// Rating
+Route::controller(RatingController::class)->group(function() {
+    Route::get('/Rating/Sample/Company/{company_id}', 'getSampleRatingByCompanyId')->where('company_id', '\d+');
+});
+
+// FileProfile
+Route::middleware('auth:api')->controller(FileProfileController::class)->group(function() {
+    Route::post('/FileProfile/Change', 'changeDp');
+});
+
+// FileProfile
+Route::middleware('auth:api')->controller(FileCoverController::class)->group(function() {
+    Route::post('/FileCover/Change', 'changeCover');
 });
 
 // User Access
@@ -145,3 +165,10 @@ Route::middleware('auth:api')->controller(UserAccessController::class)->group(fu
     Route::post('/UserAccess/create', 'create');
 });
 
+// JobApplication
+Route::middleware('auth:api')->controller(JobApplicationController::class)->group(function() {
+    Route::post('/JobApplication/apply/{job_posting_id}', 'applyJobPost')->where('job_posting_id', '\d+');
+    Route::get('/JobApplication/JobPosting/{job_posting_id}', 'getJobApplicationByJobPostingId')->where('job_posting_id', '\d+');
+    Route::get('/JobApplication/Applications/My', 'myApplication');
+    Route::get('/JobApplication/{job_application_id}', 'getJobApplicationById')->where('job_application_id', '\d+');
+});

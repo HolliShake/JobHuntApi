@@ -62,4 +62,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(PersonalData::class, 'user_id', 'id');
     }
+
+    public function profile_image()
+    {
+        return $this->hasOne(FileProfile::class, 'user_id', 'id');
+    }
+
+    public function cover_image()
+    {
+        return $this->hasOne(FileCover::class, 'user_id', 'id');
+    }
 }
