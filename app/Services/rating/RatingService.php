@@ -17,4 +17,12 @@ class RatingService extends GenericService implements IRatingService {
             }
         ])->where('company_id', $company_id)->orderBy('rating')->take(3)->get();
     }
+
+    function getMyByCompanyId($company_id, $user_id) {
+        return $this->model::with([
+            'user' => function($query) {
+                $query->with('profile_image')->with('cover_image');
+            }
+        ])->where('company_id', $company_id)->where('user_id', $user_id)->orderBy('rating')->get();
+    }
 }

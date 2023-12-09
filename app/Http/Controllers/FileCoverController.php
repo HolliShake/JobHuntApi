@@ -14,16 +14,16 @@ class FileCoverController extends ControllerBase
     function changeCover() {
         $validator = Validator::make(request()->all(), [
             'user_id' => 'required|integer',
-            'profile' => 'required|image|mimes:jpeg,png,jpg',
+            'cover' => 'required|image|mimes:jpeg,png,jpg',
         ]);
 
         if ($validator->fails()) {
             return $this->badRequest([ 'errors' => $validator->errors() ]);
         }
 
-        $profile = request()->file('profile');
-        $profile_file_name = time() . '_' . $profile->getClientOriginalName();
-        $bresult = $profile->storeAs('uploads', $profile_file_name, 'public');
+        $cover = request()->file('cover');
+        $profile_file_name = time() . '_' . $cover->getClientOriginalName();
+        $bresult = $cover->storeAs('uploads', $profile_file_name, 'public');
 
         $bannerResult = null;
 

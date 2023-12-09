@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FileCover extends Model
 {
     use HasFactory;
-    protected $table = 'file_profile';
+    protected $table = 'file_cover';
     protected $primaryKey = 'id';
 
     protected $fillable = [

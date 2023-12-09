@@ -5,20 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Rating extends Model
+class HiredApplicant extends Model
 {
     use HasFactory;
-    protected $table = 'rating';
+    protected $table = 'hired_applicant';
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'user_id',
-        'company_id',
-        'rating',
-        'comment',
+        'job_applicant_id',
     ];
 
-    function user() {
-        return $this->belongsTo(User::class);
+    function job_applicant() {
+        return $this->belongsTo(JobApplicant::class);
     }
 }

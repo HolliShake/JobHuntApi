@@ -6,6 +6,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\FileCoverController;
 use App\Http\Controllers\FileProfileController;
+use App\Http\Controllers\HiredApplicantController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\OfficeController;
@@ -147,6 +148,8 @@ Route::controller(JobPostingController::class)->group(function() {
 // Rating
 Route::controller(RatingController::class)->group(function() {
     Route::get('/Rating/Sample/Company/{company_id}', 'getSampleRatingByCompanyId')->where('company_id', '\d+');
+    Route::middleware('auth:api')->get('/Rating/Company/{company_id}', 'getMyByCompanyId')->where('company_id', '\d+');
+    Route::middleware('auth:api')->post('/Rating/comment', 'addMyComment');
 });
 
 // FileProfile
@@ -169,6 +172,16 @@ Route::middleware('auth:api')->controller(UserAccessController::class)->group(fu
 Route::middleware('auth:api')->controller(JobApplicationController::class)->group(function() {
     Route::post('/JobApplication/apply/{job_posting_id}', 'applyJobPost')->where('job_posting_id', '\d+');
     Route::get('/JobApplication/JobPosting/{job_posting_id}', 'getJobApplicationByJobPostingId')->where('job_posting_id', '\d+');
+    Route::get('/JobApplication/Dashboard/Company/{company_id}', 'getDashboardJobApplicationByCompanyId')->where('company_id', '\d+');
     Route::get('/JobApplication/Applications/My', 'myApplication');
     Route::get('/JobApplication/{job_application_id}', 'getJobApplicationById')->where('job_application_id', '\d+');
+    //
+    Route::patch('/JobApplication/approve/{job_application_id}', 'approveJobApplication')->where('job_application_id', '\d+');
+    Route::patch('/JobApplication/reject/{job_application_id}', 'rejectJobApplication')->where('job_application_id', '\d+');
+});
+
+// Employee
+Route::middleware('auth:api')->controller(HiredApplicantController::class)->group(function() {
+    Route::get('/Employee/Company/{company_id}', 'getEmployeeByCompanyId')->where('company_id', '\d+');
+    Route::delete('/Employee/Delete/{hired_applicant_id}', 'deleteHiredApplicant')->where('hired_applicant_id', '\d+');
 });

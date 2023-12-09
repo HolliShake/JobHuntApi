@@ -15,6 +15,8 @@ use App\Services\file_profile\FileProfileService;
 use App\Services\file_profile\IFileProfileService;
 use App\Services\file_sample_photo\FileSamplePhotoService;
 use App\Services\file_sample_photo\IFileSamplePhotoService;
+use App\Services\hired_applicant\HiredApplicantService;
+use App\Services\hired_applicant\IHiredApplicantService;
 use App\Services\job_applicant\IJobApplicantService;
 use App\Services\job_applicant\JobApplicantService;
 use App\Services\job_posting\IJobPostingService;
@@ -54,6 +56,7 @@ class ServiceInjector
         $app->bind(IJobPostingService::class, JobPostingService::class);
         $app->bind(IRatingService::class, RatingService::class);
         $app->bind(IJobApplicantService::class, JobApplicantService::class);
+        $app->bind(IHiredApplicantService::class, HiredApplicantService::class);
         $app->bind(IFileBannerService::class, FileBannerService::class);
         $app->bind(IFileSamplePhotoService::class, FileSamplePhotoService::class);
         $app->bind(IFileProfileService::class, FileProfileService::class);

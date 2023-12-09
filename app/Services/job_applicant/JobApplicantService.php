@@ -25,7 +25,7 @@ class JobApplicantService extends GenericService implements IJobApplicantService
             'job_posting' => function($query) {
                 $query->with([
                     'position' => function($pquery) {
-                        $pquery->with('office')->with('salary');
+                        $pquery->with('office')->with('salary')->with('company');
                     }
                 ])->with('banner')->with('sample_photos');
             }
@@ -36,7 +36,11 @@ class JobApplicantService extends GenericService implements IJobApplicantService
     function getJobApplicationByUserId($user_id) {
         return $this->model::with([
             'user' => function($query) {
-                $query->with('profile_image')->with('cover_image');
+                $query->with([
+                    'personal_data' => function($pquery) {
+                        $pquery->with('education')->with('skill');
+                    }
+                ])->with('profile_image')->with('cover_image');
             }
         ])
         ->with([
@@ -50,7 +54,11 @@ class JobApplicantService extends GenericService implements IJobApplicantService
     function getJobApplicationByJobPostingId($job_posting_id) {
         return $this->model::with([
             'user' => function($query) {
-                $query->with('profile_image')->with('cover_image');
+                $query->with([
+                    'personal_data' => function($pquery) {
+                        $pquery->with('education')->with('skill');
+                    }
+                ])->with('profile_image')->with('cover_image');
             }
         ])
         ->with([
@@ -59,5 +67,27 @@ class JobApplicantService extends GenericService implements IJobApplicantService
             }
          ])
         ->where('job_posting_id', $job_posting_id)->get();
+    }
+
+    function getJobApplicationByCompanyId($company_id) {
+        return $this->model::with([
+            'user' => function($query) {
+                $query->with([
+                    'personal_data' => function($pquery) {
+                        $pquery->with('education')->with('skill');
+                    }
+                ])->with('profile_image')->with('cover_image');
+            }
+        ])
+        ->with([
+            'job_posting' => function($query) {
+                $query->with('position');
+            }
+         ])
+        ->whereHas('job_posting', function($query) use ($company_id) {
+            $query->whereHas('position', function($query) use ($company_id) {
+                $query->where('company_id', $company_id);
+            });
+        })->where('status', 'pending')->get();
     }
 }

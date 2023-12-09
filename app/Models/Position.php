@@ -31,4 +31,8 @@ class Position extends Model
     public function office() {
         return $this->hasOne(Office::class, 'id', 'office_id');
     }
+
+    public function company() {
+        return $this->hasOne(Company::class, 'id', 'company_id');
+    }
 }
