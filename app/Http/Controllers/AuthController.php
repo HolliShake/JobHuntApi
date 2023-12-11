@@ -129,11 +129,6 @@ class AuthController extends ControllerBase
                 [
                     'user_id' => $result->id,
                     'subject' => 'admin',
-                    'action' => 'all'
-                ],
-                [
-                    'user_id' => $result->id,
-                    'subject' => 'admin',
                     'action' => 'write'
                 ],
                 [
