@@ -73,6 +73,16 @@ class UserController extends ControllerBase
             : $this->badRequest("Something went wrong while deleting.");
     }
 
+    function getResumeByUserId($user_id) {
+        $old = $this->userService->getById($user_id);
+
+        if (!$old) {
+            return $this->notFound("");
+        }
+
+        return $this->ok($old);
+    }
+
     function rules()
     {
         return [

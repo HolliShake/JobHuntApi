@@ -31,6 +31,10 @@ class User extends Authenticatable
         'country',
     ];
 
+    protected $appends = [
+        'JobExperience'
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -71,5 +75,17 @@ class User extends Authenticatable
     public function cover_image()
     {
         return $this->hasOne(FileCover::class, 'user_id', 'id');
+    }
+
+    public function getJobExperienceAttribute() {
+        return $this->hasMany(JobApplicant::class)->with([
+            'job_posting' => function($query) {
+                $query->with([
+                    'position' => function($query) {
+                        $query->with('company')->with('office');
+                    }
+                ]);
+            }
+        ])->where('status', 'accepted')->whereIn('id', HiredApplicant::select('job_applicant_id')->get())->get();
     }
 }

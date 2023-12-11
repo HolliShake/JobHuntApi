@@ -50,6 +50,7 @@ Route::middleware('auth:api')->controller(UserController::class)->group(function
     Route::get('/User/all', 'all');
     Route::put('/User/update/{user_id}', 'updateUser')->where('user_id', '\d+');
     Route::put('/User/delete/{user_id}', 'deleteUser')->where('user_id', '\d+');
+    Route::get('/User/Resume/{user_id}', 'getResumeByUserId')->where('user_id', '\d+');
 });
 
 // Personal Data
