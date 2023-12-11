@@ -18,4 +18,8 @@ class ApplicationLog extends Model
         'score',
         'job_applicant_id',
     ];
+
+    public function job_applicant() {
+        return $this->belongsTo(JobApplicant::class);
+    }
 }

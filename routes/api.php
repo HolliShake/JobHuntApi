@@ -190,6 +190,7 @@ Route::middleware('auth:api')->controller(ApplicationLogsController::class)->gro
     Route::put('/ApplicationLogs/update/{application_log_id}', 'updateEventLog')->where('application_log_id', '\d+');
     Route::delete('/ApplicationLogs/delete/{application_log_id}', 'deleteEventLog')->where('application_log_id', '\d+');
     Route::patch('/ApplicationLogs/score/{application_log_id}', 'updateScore')->where('application_log_id', '\d+');
+    Route::get('/ApplicationLogs/Dashboard/Company/{company_id}', 'getDashboardApplicationLogsByCompanyId')->where('company_id', '\d+');
 });
 
 // Employee

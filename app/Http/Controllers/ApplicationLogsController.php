@@ -9,6 +9,10 @@ class ApplicationLogsController extends ControllerBase
     function __construct(protected IApplicationLogService $service) {
     }
 
+    function getDashboardApplicationLogsByCompanyId($company_id) {
+        return $this->ok($this->service->getDashboardApplicationLogsByCompanyId($company_id));
+    }
+
     function createEventLog() {
         $validator = Validator::make(request()->all(), $this->rules());
 
