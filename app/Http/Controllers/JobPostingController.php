@@ -259,4 +259,8 @@ class JobPostingController extends ControllerBase
     function getSampleFeaturedJobPosting() {
         return $this->ok($this->jobPostingService->getSampleFeaturedJobPosting());
     }
+
+    function publicAllJobPosting() {
+        return $this->ok($this->jobPostingService->publicAllJobPosting());
+    }
 }

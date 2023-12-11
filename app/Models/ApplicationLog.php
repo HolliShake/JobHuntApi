@@ -5,21 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class HiredApplicant extends Model
+class ApplicationLog extends Model
 {
     use HasFactory;
-    protected $table = 'hired_applicant';
+    protected $table = 'application_logs';
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'event_date',
+        'event_title',
+        'event_description',
+        'score',
         'job_applicant_id',
     ];
-
-    protected $casts = [
-        'isActive' => 'boolean',
-    ];
-
-    function job_applicant() {
-        return $this->belongsTo(JobApplicant::class);
-    }
 }

@@ -30,6 +30,7 @@ class JobApplicantService extends GenericService implements IJobApplicantService
                 ])->with('banner')->with('sample_photos');
             }
          ])
+        ->with('application_logs')
         ->find($id);
     }
 

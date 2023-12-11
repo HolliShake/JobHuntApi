@@ -1,8 +1,10 @@
 <?php
 namespace App\Services;
 
-use App\Services\adtype\AdtypeService;
+use App\Services\adtype\AdTypeService;
 use App\Services\adtype\IAdTypeService;
+use App\Services\application_log\ApplicationLogService;
+use App\Services\application_log\IApplicationLogService;
 use App\Services\company\CompanyService;
 use App\Services\company\ICompanyService;
 use App\Services\education\EducationService;
@@ -43,6 +45,7 @@ class ServiceInjector
 {
     static function inject(Application $app)
     {
+        $app->bind(IApplicationLogService::class, ApplicationLogService::class);
         $app->bind(ISkillService::class, SkillService::class);
         $app->bind(IUserService::class, UserService::class);
         $app->bind(IUserAccessService::class, UserAccessService::class);
@@ -52,7 +55,7 @@ class ServiceInjector
         $app->bind(ISalaryService::class, SalaryService::class);
         $app->bind(IPositionService::class, PositionService::class);
         $app->bind(IOfficeService::class, OfficeService::class);
-        $app->bind(IAdTypeService::class, AdtypeService::class);
+        $app->bind(IAdTypeService::class, AdTypeService::class);
         $app->bind(IJobPostingService::class, JobPostingService::class);
         $app->bind(IRatingService::class, RatingService::class);
         $app->bind(IJobApplicantService::class, JobApplicantService::class);

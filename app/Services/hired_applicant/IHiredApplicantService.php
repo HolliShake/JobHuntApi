@@ -5,4 +5,5 @@ use App\Services\IGenericService;
 
 interface IHiredApplicantService extends IGenericService {
     function getHiredApplicantByCompanyId($company_id);
+    function getByUserId($user_id);
 }

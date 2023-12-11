@@ -23,6 +23,10 @@ class Company extends Model
         'status'
     ];
 
+    protected $appends = [
+        'average'
+    ];
+
     protected $casts = [
         'average' => 'integer'
     ];

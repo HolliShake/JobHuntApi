@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdTypeController;
+use App\Http\Controllers\ApplicationLogsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EducationController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserAccessController;
 use App\Http\Controllers\UserController;
+use App\Services\user\IUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,8 +33,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->get('/user', function (Request $request, IUserService $userService) {
+    $user = $request->user();
+    return $userService->getUserWithPersonalData($user->id);
 });
 
 // Auth
@@ -180,8 +183,17 @@ Route::middleware('auth:api')->controller(JobApplicationController::class)->grou
     Route::patch('/JobApplication/reject/{job_application_id}', 'rejectJobApplication')->where('job_application_id', '\d+');
 });
 
+// Application Logs
+Route::middleware('auth:api')->controller(ApplicationLogsController::class)->group(function() {
+    Route::post('/ApplicationLogs/create', 'createEventLog');
+    Route::put('/ApplicationLogs/update/{application_log_id}', 'updateEventLog')->where('application_log_id', '\d+');
+    Route::delete('/ApplicationLogs/delete/{application_log_id}', 'deleteEventLog')->where('application_log_id', '\d+');
+    Route::patch('/ApplicationLogs/score/{application_log_id}', 'updateScore')->where('application_log_id', '\d+');
+});
+
 // Employee
 Route::middleware('auth:api')->controller(HiredApplicantController::class)->group(function() {
     Route::get('/Employee/Company/{company_id}', 'getEmployeeByCompanyId')->where('company_id', '\d+');
+    Route::get('/Employee/My', 'getMyWork');
     Route::delete('/Employee/Delete/{hired_applicant_id}', 'deleteHiredApplicant')->where('hired_applicant_id', '\d+');
 });

@@ -36,4 +36,28 @@ class HiredApplicantService extends GenericService implements IHiredApplicantSer
             })->groupBy('user_id');
          })->get();
     }
+
+    function getByUserId($user_id) {
+        return $this->model::with([
+            'job_applicant' => function($query) {
+                $query->with([
+                    'job_posting' => function($pquery) {
+                        $pquery->with([
+                            'position' => function($squery) {
+                                $squery->with('salary')->with('company')->with('office');
+                            }
+                        ]);
+                    }
+                ])
+                ->with([
+                    'user' => function($query) {
+                        $query->with('profile_image')->with('cover_image');
+                    }
+                ]);
+            }
+        ])
+        ->whereHas('job_applicant', function($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+        })->get();
+    }
 }

@@ -24,7 +24,7 @@ class AuthController extends ControllerBase
 
         if ($validator->fails())
         {
-            return $this->badRequest([ 'error' => $validator->errors() ]);
+            return $this->badRequest([ 'errors' => $validator->errors() ]);
         }
 
         $credentials = request()->only(['email', 'password']);
@@ -32,12 +32,12 @@ class AuthController extends ControllerBase
 
         if (!$user)
         {
-            return $this->badRequest([ 'errors' => "invalid username or password" ]);
+            return $this->badRequest([ 'error' => "invalid username or password" ]);
         }
 
         if (!Hash::check($credentials['password'], $user->password))
         {
-            return $this->unauthorized([ 'errors' => "invalid username or password" ]);
+            return $this->unauthorized([ 'error' => "invalid username or password" ]);
         }
 
         $scope = [];

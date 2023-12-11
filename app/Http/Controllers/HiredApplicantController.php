@@ -15,6 +15,10 @@ class HiredApplicantController extends ControllerBase
         return $this->ok($this->hiredApplicantService->getHiredApplicantByCompanyId($company_id));
     }
 
+    function getMyWork() {
+        return $this->ok($this->hiredApplicantService->getByUserId(request()->user()->id));
+    }
+
     function deleteHiredApplicant($hired_applicant_id) {
         $result = $this->hiredApplicantService->getById($hired_applicant_id);
 

@@ -23,4 +23,8 @@ class JobApplicant extends Model
     public function job_posting() {
         return $this->belongsTo(JobPosting::class);
     }
+
+    public function application_logs() {
+        return $this->hasMany(ApplicationLog::class);
+    }
 }
