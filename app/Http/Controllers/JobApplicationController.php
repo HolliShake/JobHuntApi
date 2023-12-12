@@ -25,8 +25,10 @@ class JobApplicationController extends ControllerBase
     function applyJobPost($job_posting_id) {
         $user = request()->user();
 
-        return ($this->jobApplicantService->create([ 'job_posting_id' => $job_posting_id, 'user_id' => $user->id ]))
-            ? $this->noContent()
+        $result = $this->jobApplicantService->create([ 'job_posting_id' => $job_posting_id, 'user_id' => $user->id ]);
+
+        return ($result)
+            ? $this->created($result)
             : $this->badRequest('');
     }
 
