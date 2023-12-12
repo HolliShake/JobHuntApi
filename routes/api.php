@@ -178,10 +178,12 @@ Route::middleware('auth:api')->controller(JobApplicationController::class)->grou
     Route::get('/JobApplication/JobPosting/{job_posting_id}', 'getJobApplicationByJobPostingId')->where('job_posting_id', '\d+');
     Route::get('/JobApplication/Dashboard/Company/{company_id}', 'getDashboardJobApplicationByCompanyId')->where('company_id', '\d+');
     Route::get('/JobApplication/Applications/My', 'myApplication');
+    Route::get('/JobApplication/Applications/My/JobPosting/{job_posting_id}', 'myPendingApplicationByJobPosting')->where('job_posting_id', '\d+');
     Route::get('/JobApplication/{job_application_id}', 'getJobApplicationById')->where('job_application_id', '\d+');
     //
     Route::patch('/JobApplication/approve/{job_application_id}', 'approveJobApplication')->where('job_application_id', '\d+');
     Route::patch('/JobApplication/reject/{job_application_id}', 'rejectJobApplication')->where('job_application_id', '\d+');
+    Route::delete('/JobApplication/cancel/{job_application_id}', 'deleteJobApplication')->where('job_application_id', '\d+');
 });
 
 // Application Logs

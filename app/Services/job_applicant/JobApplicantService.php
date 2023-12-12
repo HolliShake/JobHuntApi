@@ -91,4 +91,22 @@ class JobApplicantService extends GenericService implements IJobApplicantService
             });
         })->where('status', 'pending')->get();
     }
+
+    function getPendingJobApplicationByUserAndJobPostId($user_id, $job_posting_id) {
+        return $this->model::with([
+            'user' => function($query) {
+                $query->with([
+                    'personal_data' => function($pquery) {
+                        $pquery->with('education')->with('skill');
+                    }
+                ])->with('profile_image')->with('cover_image');
+            }
+        ])
+        ->with([
+            'job_posting' => function($query) {
+                $query->with('position');
+            }
+         ])
+        ->where('user_id', $user_id)->where('job_posting_id', $job_posting_id)->where('status', 'pending')->get();
+    }
 }

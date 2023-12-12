@@ -43,6 +43,11 @@ class JobApplicationController extends ControllerBase
         return $this->ok($this->jobApplicantService->getJobApplicationByUserId($user->id));
     }
 
+    function myPendingApplicationByJobPosting($job_posting_id) {
+        $user = request()->user();
+        return $this->ok($this->jobApplicantService->getPendingJobApplicationByUserAndJobPostId($user->id, $job_posting_id));
+    }
+
     //
     function approveJobApplication($job_application_id) {
         $validator = Validator::make(request()->all(), [
@@ -97,6 +102,22 @@ class JobApplicationController extends ControllerBase
         $uresult = $this->jobApplicantService->update($updated);
 
         return ($uresult)
+            ? $this->noContent()
+            : $this->badRequest('');
+    }
+
+    function deleteJobApplication($job_application_id) {
+        $data = $this->jobApplicantService->getById($job_application_id);
+
+        if (!$data) {
+            return $this->notFound('');
+        }
+
+        if (strcmp($data->status, 'pending') !== 0) {
+            return $this->badRequest([ 'errors' => 'application is not pending!' ]);
+        }
+
+        return ($this->jobApplicantService->delete($data))
             ? $this->noContent()
             : $this->badRequest('');
     }
