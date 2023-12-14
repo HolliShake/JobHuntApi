@@ -25,7 +25,7 @@ class JobPostingService extends GenericService implements IJobPostingService {
             }
         ])->with('adtype')->with('banner')->with('sample_photos')->whereHas('position', function($query) use($company_id) {
             $query->where('company_id', $company_id);
-        })->where('paid', true)->whereRaw('job_posting.date_posted < ? and job_posting.date_posted + (select duration from adtype where id = job_posting.adtype_id) >= ?', [Date::now(), Date::now()])
+        })->whereRaw('job_posting.date_posted < ? and job_posting.date_posted + (select duration from adtype where id = job_posting.adtype_id) >= ?', [Date::now(), Date::now()])
             ->get();
     }
 
