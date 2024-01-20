@@ -32,5 +32,13 @@ class UserService extends GenericService implements IUserService {
             }
         ])->where('id', $userId)->first();
     }
+
+    function getAllExcept($exceptionUserId) {
+        return User::with("user_access")->with('profile_image')->with('cover_image')->with([
+            "personal_data" => function($query) {
+                $query->with('education')->with('skill');
+            }
+        ])->where('id', '!=', $exceptionUserId)->get();
+    }
 }
 

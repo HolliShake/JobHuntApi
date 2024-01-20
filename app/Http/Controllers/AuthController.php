@@ -62,29 +62,37 @@ class AuthController extends ControllerBase
             return $this->badRequest([ 'error' => $validator->errors() ]);
         }
 
-        $result = $this->userService->create(request()->all());
+        $result = $this->userService->create([
+            ...request()->all(),
+            'verified_by_admin' => (strcmp(request()->input('role'), 'user') == 0)
+        ]);
 
 
         if ($result) {
             $access = $this->userAccess->createAll([
                 [
                     'user_id' => $result->id,
-                    'subject' => 'user',
+                    'subject' => 'auth',
                     'action' => 'read'
                 ],
                 [
                     'user_id' => $result->id,
-                    'subject' => 'user',
+                    'subject' => request()->input('role'),
+                    'action' => 'read'
+                ],
+                [
+                    'user_id' => $result->id,
+                    'subject' => request()->input('role'),
                     'action' => 'write'
                 ],
                 [
                     'user_id' => $result->id,
-                    'subject' => 'user',
+                    'subject' => request()->input('role'),
                     'action' => 'update'
                 ],
                 [
                     'user_id' => $result->id,
-                    'subject' => 'user',
+                    'subject' => request()->input('role'),
                     'action' => 'delete'
                 ],
             ]);
@@ -116,7 +124,9 @@ class AuthController extends ControllerBase
             'address' => 'USTP-CDO, CM-Recto Lapasan',
             'country' => 'Philippines',
             'email' => 'admin.jobhunt.dev@gmail.com',
-            'password' => Hash::make('admin12345678')
+            'password' => Hash::make('admin12345678'),
+            'verified_by_admin' => true,
+            'role' => 'admin'
         ]);
 
         if ($result) {
@@ -165,7 +175,8 @@ class AuthController extends ControllerBase
             'address' => 'required|string|max: 512',
             'country' => 'required|string|max: 100',
             'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|confirmed'
+            'password' => 'required|string|confirmed',
+            'role' => 'required|string',
         ];
     }
 }

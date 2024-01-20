@@ -16,6 +16,11 @@ class UserController extends ControllerBase
         return $this->ok($this->userService->all());
     }
 
+    function getAllUsersExceptCurrent() {
+        $current = request()->user();
+        return $this->ok($this->userService->getAllExcept($current->id));
+    }
+
     function updateUser($id)
     {
         $validator = Validator::make(request()->all(), $this->rules());
@@ -81,6 +86,25 @@ class UserController extends ControllerBase
         }
 
         return $this->ok($old);
+    }
+
+    function verifyUser($user_id) {
+        $old = $this->userService->getById($user_id);
+
+        if (!$old) {
+            return $this->notFound("");
+        }
+
+        $updated = (object) array_merge((array) $old, [
+            'verified_by_admin' => true,
+            'id' => $user_id
+        ]);
+
+        $result = $this->userService->update($updated);
+
+        return ($result)
+            ? $this->ok($updated)
+            : $this->badRequest("Something went wrong while verifying.");
     }
 
     function rules()

@@ -51,6 +51,9 @@ Route::middleware('auth:api')->controller(UserController::class)->group(function
     Route::put('/User/update/{user_id}', 'updateUser')->where('user_id', '\d+');
     Route::put('/User/delete/{user_id}', 'deleteUser')->where('user_id', '\d+');
     Route::get('/User/Resume/{user_id}', 'getResumeByUserId')->where('user_id', '\d+');
+    Route::get('/User/all/exceptcurrent', 'getAllUsersExceptCurrent');
+    //
+    Route::patch('/User/verify/{user_id}', 'verifyUser')->where('user_id', '\d+');
 });
 
 // Personal Data

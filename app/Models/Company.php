@@ -20,7 +20,9 @@ class Company extends Model
         'description',
         'address',
         'user_id',
-        'status'
+        'status',
+        'verified_by_admin',
+        'is_declined'
     ];
 
     protected $appends = [
@@ -28,7 +30,9 @@ class Company extends Model
     ];
 
     protected $casts = [
-        'average' => 'integer'
+        'average' => 'integer',
+        'verified_by_admin' => 'boolean',
+        'is_declined' => 'boolean'
     ];
 
     public function user() {
