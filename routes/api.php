@@ -86,11 +86,16 @@ Route::middleware('auth:api')->controller(EducationController::class)->group(fun
 // Company
 Route::middleware('auth:api')->controller(CompanyController::class)->group(function() {
     Route::get('/Company/all', 'all');
+    Route::get('/Company/partners/all', 'allPartners');
     Route::get('/Company/{company_id}', 'getCompanyById')->where('company_id', '\d+');
     Route::get('/Company/My', 'myCompany');
     Route::post('/Company/create', 'createCompany');
     Route::put('/Company/update/{companyd_id}', 'updateCompany')->where('company_id', '\d+');
     Route::delete('/Company/delete/{companyd_id}', 'deleteCompany')->where('company_id', '\d+');
+    //
+    Route::patch('/Company/accept/{company_id}', 'acceptCompany')->where('company_id', '\d+');
+    Route::patch('/Company/reject/{company_id}', 'rejectCompany')->where('company_id', '\d+');
+    Route::get('/Company/default', 'getDefaultCompany');
 });
 
 // Company Public

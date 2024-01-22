@@ -11,6 +11,10 @@ class CompanyService extends GenericService implements ICompanyService {
         parent::__construct(Company::class);
     }
 
+    function allPartners() {
+        return $this->model::where('is_default', false)->get();
+    }
+
     function getAllCompaniesByUserId($user_id) {
         return $this->model::where('user_id', $user_id)->get();
     }
@@ -29,5 +33,13 @@ class CompanyService extends GenericService implements ICompanyService {
                 // $query->with('profile_pic');
             }
         ])->where('status', 'active')->inRandomOrder()->take(10)->get();
+    }
+
+    function getDefaultCompany() {
+        return $this->model::with([
+            'user' => function($query) {
+                // $query->with('profile_pic');
+            }
+        ])->where('is_default', true)->first();
     }
 }

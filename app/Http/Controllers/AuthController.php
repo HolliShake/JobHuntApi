@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\company\ICompanyService;
 use App\Services\user\IUserService;
 use App\Services\user_access\IUserAccessService;
 use Illuminate\Support\Facades\Hash;
@@ -10,7 +11,11 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends ControllerBase
 {
-    function __construct(protected readonly IUserService $userService, protected readonly IUserAccessService $userAccess)
+    function __construct(
+        protected readonly IUserService $userService,
+        protected readonly IUserAccessService $userAccess,
+        protected readonly ICompanyService $companyService
+    )
     {
     }
 
@@ -100,7 +105,6 @@ class AuthController extends ControllerBase
             if (!$access) {
                 return $this->badRequest("");
             }
-
         }
 
         return ($result) ? $this->noContent() : $this->badRequest("Something went wrong while registering.");
@@ -157,6 +161,22 @@ class AuthController extends ControllerBase
                 return $this->badRequest("");
             }
 
+            //
+            $com = $this->companyService->create([
+                'company_name' => "Starboard Manpower Inc",
+                'email' => 'starboardmanpowerinc@gmail.com',
+                'description' => 'Starboard Manpower',
+                'address' => 'Cagayan de Oro City',
+                'status' => 'active',
+                'user_id' => $result->id,
+                'verified_by_admin' => true,
+                'is_declined' => false,
+                'is_default' => true,
+            ]);
+
+            if (!$com) {
+                return $this->badRequest("");
+            }
         }
 
         return ($result) ? $this->created($result) : $this->badRequest("");

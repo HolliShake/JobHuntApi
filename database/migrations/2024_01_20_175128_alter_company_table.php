@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('company', function(Blueprint $table) {
             $table->boolean('verified_by_admin')->default(false);
             $table->boolean('is_declined')->default(false);
+            $table->boolean('is_default')->default(false);
         });
     }
 

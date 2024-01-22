@@ -33,6 +33,20 @@ class CompanyController extends ControllerBase
             : $this->notFound("Company not found.");
     }
 
+    function getDefaultCompany()
+    {
+        $company = $this->companyService->getDefaultCompany();
+
+        return ($company)
+            ? $this->ok($company)
+            : $this->notFound("Company not found.");
+    }
+
+    function allPartners()
+    {
+        return $this->ok($this->companyService->allPartners());
+    }
+
     function createCompany()
     {
         $validator = Validator::make(request()->all(), $this->rules());
@@ -47,6 +61,46 @@ class CompanyController extends ControllerBase
         return ($company)
             ? $this->created($company)
             : $this->badRequest("Something went wrong while creating.");
+    }
+
+    function acceptCompany($company_id) {
+        $company = $this->companyService->getById($company_id);
+
+        if (!$company)
+        {
+            return $this->notFound("");
+        }
+
+        $updated = (object) array_merge((array) $company, [
+            'id' => $company_id,
+            'verified_by_admin' => true,
+            'is_declined' => false,
+        ]);
+        $uresult = $this->companyService->update($updated);
+
+        return ($uresult)
+            ? $this->ok($updated)
+            : $this->badRequest("Something went wrong while updating.");
+    }
+
+    function rejectCompany($company_id) {
+        $company = $this->companyService->getById($company_id);
+
+        if (!$company)
+        {
+            return $this->notFound("");
+        }
+
+        $updated = (object) array_merge((array) $company, [
+            'id' => $company_id,
+            'verified_by_admin' => true,
+            'is_declined' => true,
+        ]);
+        $uresult = $this->companyService->update($updated);
+
+        return ($uresult)
+            ? $this->ok($updated)
+            : $this->badRequest("Something went wrong while updating.");
     }
 
     function updateCompany($company_id)
