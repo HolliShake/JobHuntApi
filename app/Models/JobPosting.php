@@ -22,6 +22,8 @@ class JobPosting extends Model
         'is_featured',
         'is_editable',
         'description',
+        // new update
+        'status',
     ];
 
     protected $casts = [

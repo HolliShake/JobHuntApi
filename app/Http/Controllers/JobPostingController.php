@@ -40,6 +40,8 @@ class JobPostingController extends ControllerBase
             'is_hidden' => $request['is_hidden'],
             'paid' => $request['paid'],
             'description' => $request['description'],
+            // new update
+            'status' => 'pending',
         ]);
 
         if (!$jobPosting) {
@@ -202,7 +204,7 @@ class JobPostingController extends ControllerBase
         if (!$jobPosting) {
             return $this->notFound('');
         }
-
+        error_log(request()->input('status'));
         $updated = (object) array_merge((array) $jobPosting, request()->all());
         $uresult = $this->jobPostingService->update($updated);
 
@@ -256,11 +258,22 @@ class JobPostingController extends ControllerBase
 
     //
 
+    function publicAllJobPosting() {
+        return $this->ok($this->jobPostingService->publicAllJobPosting());
+    }
+
+    function getAllPublicJobPostingByCompanyId($company_id) {
+        return $this->ok($this->jobPostingService->getAllApprovedByCompanyId($company_id));
+    }
+
     function getSampleFeaturedJobPosting() {
         return $this->ok($this->jobPostingService->getSampleFeaturedJobPosting());
     }
 
-    function publicAllJobPosting() {
-        return $this->ok($this->jobPostingService->publicAllJobPosting());
-    }
+    /*
+        Route::get('/JobPosting/Public/all', 'publicAllJobPosting');
+        Route::get('/JobPosting/Public/{job_posting_id}', 'getJobPostingById')->where('job_posting_id', '\d+');
+        Route::get('/JobPosting/Public/Company/{company_id}', 'getAllPublicJobPostingByCompanyId')->where('company_id', '\d+');
+        Route::get('/JobPosting/Public/featured/sample', 'getSampleFeaturedJobPosting');
+    */
 }

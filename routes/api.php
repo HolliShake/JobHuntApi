@@ -106,6 +106,7 @@ Route::controller(CompanyController::class)->group(function() {
 
 // Salary
 Route::middleware('auth:api')->controller(SalaryController::class)->group(function() {
+    Route::get('/Salary/all', 'getAllSalaries');
     Route::get('/Salary/Company/{company_id}', 'getSalariesByCompanyId')->where('company_id', '\d+');
     Route::get('/Salary/{salary_id}', 'getSalaryById')->where('salary_id', '\d+');
     Route::post('/Salary/create', 'createSalary');
@@ -153,7 +154,7 @@ Route::middleware('auth:api')->controller(JobPostingController::class)->group(fu
 Route::controller(JobPostingController::class)->group(function() {
     Route::get('/JobPosting/Public/all', 'publicAllJobPosting');
     Route::get('/JobPosting/Public/{job_posting_id}', 'getJobPostingById')->where('job_posting_id', '\d+');
-    Route::get('/JobPosting/Public/Company/{company_id}', 'getCompanyJobPosting')->where('company_id', '\d+');
+    Route::get('/JobPosting/Public/Company/{company_id}', 'getAllPublicJobPostingByCompanyId')->where('company_id', '\d+');
     Route::get('/JobPosting/Public/featured/sample', 'getSampleFeaturedJobPosting');
 });
 

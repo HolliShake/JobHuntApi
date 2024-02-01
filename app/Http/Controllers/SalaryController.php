@@ -9,6 +9,10 @@ class SalaryController extends ControllerBase
     function __construct(protected readonly ISalaryService $salaryService){
     }
 
+    function getAllSalaries() {
+        return $this->ok($this->salaryService->all());
+    }
+
     function getSalariesByCompanyId($company_id) {
         return $this->ok($this->salaryService->getSalaryByCompanyId($company_id));
     }
@@ -71,7 +75,7 @@ class SalaryController extends ControllerBase
             'level' => 'required|string',
             'value' => 'required|numeric',
             'currency' => 'required|string',
-            'company_id' => 'required|integer',
+            // 'company_id' => 'required|integer',
         ];
     }
 }

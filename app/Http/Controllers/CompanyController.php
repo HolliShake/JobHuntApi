@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Services\company\ICompanyService;
+use App\Services\office\IOfficeService;
 use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends ControllerBase
 {
-    function __construct(protected readonly ICompanyService $companyService) {
+    function __construct(
+        protected readonly ICompanyService $companyService,
+        protected readonly IOfficeService $officeService,
+    )
+    {
     }
 
     function all()
@@ -57,6 +62,21 @@ class CompanyController extends ControllerBase
         }
 
         $company = $this->companyService->create(request()->all());
+        if ($company)
+        {
+            $office_result = $this->officeService->create([
+                'company_id' => $company->id,
+                'name' => $company->company_name . ' ' . 'Main Office',
+                'address' => $company->address,
+                'mobile_number' => '09123456789',
+                'country' => 'Philippines',
+            ]);
+
+            if (!$office_result)
+            {
+                return $this->badRequest("Something went wrong while creating.");
+            }
+        }
 
         return ($company)
             ? $this->created($company)

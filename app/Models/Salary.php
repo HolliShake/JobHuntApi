@@ -16,6 +16,6 @@ class Salary extends Model
         'level',
         'value',
         'currency',
-        'company_id'
+        // 'company_id'
     ];
 }
