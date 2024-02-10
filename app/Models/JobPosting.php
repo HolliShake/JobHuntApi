@@ -53,4 +53,9 @@ class JobPosting extends Model
     {
         return $this->hasMany(FileSamplePhoto::class, 'job_posting_id', 'id');
     }
+
+    function jobApplicants()
+    {
+        return $this->hasMany(JobApplicant::class);
+    }
 }

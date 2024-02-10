@@ -48,4 +48,22 @@ class Company extends Model
     public function getAverageAttribute() {
         return (int) $this->rating->avg('rating');
     }
+
+    public function employeeStatus() {
+        return $this->hasMany(Position::class)
+            ->with([
+                'jobPosting' => function($query) {
+                    $query->with([
+                        'jobApplicants' => function($query) {
+                            $query->where('status', 'accepted');
+                        }
+                    ]);
+                }
+            ]);
+    }
+
+    public function delete() {
+        $this->hasMany(Office::class)->delete();
+        return parent::delete();
+    }
 }

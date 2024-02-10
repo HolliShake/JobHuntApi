@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\adtype\IAdTypeService;
 use App\Services\company\ICompanyService;
 use App\Services\user\IUserService;
 use App\Services\user_access\IUserAccessService;
@@ -14,7 +15,8 @@ class AuthController extends ControllerBase
     function __construct(
         protected readonly IUserService $userService,
         protected readonly IUserAccessService $userAccess,
-        protected readonly ICompanyService $companyService
+        protected readonly ICompanyService $companyService,
+        protected readonly IAdTypeService $adTypeService
     )
     {
     }
@@ -177,6 +179,18 @@ class AuthController extends ControllerBase
             if (!$com) {
                 return $this->badRequest("");
             }
+
+            //
+            $addtype = $this->adTypeService->create([
+                'type' => 'DEFAULT',
+                'price' => 0,
+                'duration' => 30,
+                'max_skills_matching' => 50,
+                'is_search_priority' => true,
+                'is_featured' => true,
+                'is_analytics_available' => true,
+                'is_editable' => true
+            ]);
         }
 
         return ($result) ? $this->created($result) : $this->badRequest("");

@@ -35,4 +35,8 @@ class Position extends Model
     public function company() {
         return $this->hasOne(Company::class, 'id', 'company_id');
     }
+
+    public function jobPosting() {
+        return $this->hasMany(JobPosting::class);
+    }
 }

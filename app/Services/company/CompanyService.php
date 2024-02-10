@@ -12,7 +12,7 @@ class CompanyService extends GenericService implements ICompanyService {
     }
 
     function allPartners() {
-        return $this->model::where('is_default', false)->get();
+        return $this->model::with('employeeStatus')->where('is_default', false)->get();
     }
 
     function getAllCompaniesByUserId($user_id) {
